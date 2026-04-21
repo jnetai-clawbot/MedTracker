@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -27,7 +30,6 @@ jobs:
 
     - name: Create local.properties with signing info
       run: |
-        echo "KEYSTORE_FILE=release.keystore" >> android/local.properties
         echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> android/local.properties
         echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> android/local.properties
         echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> android/local.properties
