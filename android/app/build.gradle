@@ -4,6 +4,13 @@ plugins {
     id 'org.jetbrains.kotlin.kapt'
 }
 
+def keystoreFile = rootProject.file("app/release.keystore")
+def localProps = new Properties()
+def localPropsFile = rootProject.file("local.properties")
+if (localPropsFile.exists()) {
+    localProps.load(new FileInputStream(localPropsFile))
+}
+
 android {
     namespace 'com.jnetai.medtracker'
     compileSdk 34
@@ -16,6 +23,15 @@ android {
         versionName "1.0.0"
     }
 
+    signingConfigs {
+        release {
+            storeFile keystoreFile
+            storePassword localProps.getProperty("KEYSTORE_PASSWORD", "MedTrack2026")
+            keyAlias localProps.getProperty("KEY_ALIAS", "release")
+            keyPassword localProps.getProperty("KEY_PASSWORD", "MedTrack2026")
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -24,15 +40,6 @@ android {
         }
         debug {
             minifyEnabled false
-        }
-    }
-
-    signingConfigs {
-        release {
-            storeFile file('release.keystore')
-            storePassword 'MedTrack2026'
-            keyAlias 'release'
-            keyPassword 'MedTrack2026'
         }
     }
 
