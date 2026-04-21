@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme colors -->
+    <color name="primary">#6750A4</color>
+    <color name="primary_dark">#4F378B</color>
+    <color name="primary_variant">#D0BCFF</color>
+    <color name="surface_dark">#1C1B1F</color>
+    <color name="card_dark">#2B2930</color>
+    <color name="background_dark">#121212</color>
+    <color name="warning_bg">#3D2F00</color>
+    <color name="warning_text">#FFB74D</color>
+    <color name="nav_icon">#BB86FC</color>
+
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>

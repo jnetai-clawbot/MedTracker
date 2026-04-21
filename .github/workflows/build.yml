@@ -1,0 +1,63 @@
+name: Build and Release
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v3
+
+    - name: Decode keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/release.keystore
+
+    - name: Build Release APK
+      working-directory: android
+      run: ./gradlew assembleRelease
+
+    - name: Rename APK
+      run: |
+        cp android/app/build/outputs/apk/release/app-release.apk MedTracker.apk
+
+    - name: Get version
+      id: version
+      run: |
+        VERSION=$(grep 'versionName' android/app/build.gradle | awk -F'"' '{print $2}')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        name: MedTracker v${{ steps.version.outputs.version }}
+        files: MedTracker.apk
+        body: |
+          ## MedTracker v${{ steps.version.outputs.version }}
+
+          ### Installation
+          Download the APK below and install on your Android device.
+
+          ### Features
+          - Medication reminders with AlarmManager
+          - Dose tracking (taken/skipped/missed)
+          - Refill tracking with alerts
+          - Drug interaction warnings
+          - Calendar view
+          - History log with JSON export
+          - Dark theme Material Design 3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

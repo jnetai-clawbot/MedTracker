@@ -1,0 +1,12 @@
+MedTracker v1.0.0 - Initial Release
+- Add medications with name, dosage, frequency, and reminder times
+- Multiple daily reminders via AlarmManager
+- Mark doses as taken/skipped
+- Refill tracking with remaining pills count and low-supply alerts
+- Drug interaction warnings (built-in database of common interactions)
+- Calendar view showing medication schedule
+- History log (when taken, when missed)
+- Export history as JSON
+- Dark theme, Material Design 3
+- About section with version, update check (GitHub API), share button
+- Boot receiver to reschedule alarms after restart
